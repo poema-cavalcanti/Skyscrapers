@@ -2,10 +2,8 @@
 *	SKYSCRAPERS	CLASS																	*
 *																						*
 *	The following creates a SkyscrapersBoard class that holds information about a		*
-*	Skycrapers map. The class will have whether the map has been solved, and what		*
-*	values the buildings on the map have.												*
+*	Skycrapers map.																		*
 *																						*
-*	"Empty" map locations will have a value of zero.									*
 *	The maximum building size is MAP_SIZE.												*
 ****************************************************************************************/
 
@@ -27,7 +25,10 @@ private:
 	int top[MAP_SIZE];				// conditions for top side
 	int right[MAP_SIZE];			// conditions for right side
 	int bottom[MAP_SIZE];			// conditions for bottom side
-	LList<int[][]> solutions;
+	struct Board {
+		int matrix[MAP_SIZE][MAP_SIZE];
+	};
+	LList<Board> solutions;
 
 public:
 	SkyscraperBoard();
@@ -35,7 +36,7 @@ public:
 	bool is_latin(int matrix[MAP_SIZE][MAP_SIZE]);
 	bool is_solution(int matrix[MAP_SIZE][MAP_SIZE]);
 	bool valid_borders();
-	bool add(int matrix[MAP_SIZE]);
+	bool add(int matrix[MAP_SIZE * MAP_SIZE]);
 };
 
 #endif
