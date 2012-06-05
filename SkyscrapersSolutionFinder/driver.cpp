@@ -42,16 +42,7 @@ using namespace std;
 const int MAP_SIZE = 4; // global variable for the number of rows and columns
 						// MAP_SIZE also determines how tall the tallest building can be
 
-/****************************************************************************************
-*	SKYSCRAPERS	CLASS																	*
-*																						*
-*	The following creates a class called Skyscrapers that holds information about a		*
-*	Skycrapers map. The class will have whether the map has been solved, and what		*
-*	values the buildings on the map have.												*
-*																						*
-*	"Empty" map locations will have a value of zero.									*
-*	The maximum building size is MAP_SIZE.												*
-****************************************************************************************/
+
 class Skyscrapers {
 private:
 	bool is_solved;					// solution status
@@ -63,16 +54,7 @@ private:
 public:
 	// CONSTRUCTOR
 	Skyscrapers() {
-		is_solved = false; // sets map status to not solved
-		for (int i = 0; i < MAP_SIZE; i++) {		// loop through rows
-			for (int j = 0; j < MAP_SIZE; j++) {	// loop through columns
-				map[i][j] = 0;				// set to zero
-			}
-			left[i] = 0; // initialize left conditions array to 0
-			top [i] = 0; // initialize top conditions array to 0
-			right[i] = 0; // initialize right conditions array to 0
-			bottom[i] = 0; // initialize bottom conditions array to 0
-		}
+		
 	}
 
 	// SET VALUE

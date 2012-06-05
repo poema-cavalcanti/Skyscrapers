@@ -6,6 +6,7 @@
 *******************************************************************************/
 
 #include<iostream>
+#include<algorithm>
 #include<math.h>
 using namespace std;
 
@@ -17,11 +18,13 @@ using namespace std;
 
 class MatrixGenerator {
 private:
-	int matrix[MAP_SIZE][MAP_SIZE];
+	int matrix[MAP_SIZE * MAP_SIZE];
+	SkyscraperBoard board;
 
 public:
 	MatrixGenerator();
-	void generate(LList & matrices);
+	void generate();
+	void set_board (SkyscraperBoard b);
 };
 
 #endif

@@ -75,7 +75,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="driver.cpp" />
-    <ClCompile Include="LList.cpp" />
     <ClCompile Include="MatrixGenerator.cpp" />
     <ClCompile Include="SkyscraperBoard.cpp" />
   </ItemGroup>
