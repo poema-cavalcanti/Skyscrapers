@@ -10,89 +10,32 @@
 *			  - Every row/column contains each number exactly once.
 *			  - The numbers (referred to as conditions) around the grid tell you how many skyscrapers you can see.
 *			  - You can't see a shorter skyscraper behind a taller one.
-			  
-			  The cases which produce multiple answers in 4x4 matrices are described below:
-
-			  Multiple 4 and 3 solutions
-			  When the conditions around the grid are like so:
-			    X 2 2 X
-			  X			X
-			  2			2
-			  2			2
-			  X			X
-			    X 2 2 X
-			  Then four possible solutions are:
-			  1.				2.				3.				4.
-			    X 2 2 X			  X 2 2 X		  X 2 2 X		  X 2 2 X	
-			  X|	   |X		X|	     |X		X|	     |X		X|	     |X
-			  2|3 4    |2		2|  4   3|2		2|3   4  |2		2|    4 3|2
-			  2|    4 3|2		2|3   4  |2		2|  4   3|2		2|3 4    |2
-			  X|	   |X		X|	     |X		X|	     |X		X|	     |X
-			    X 2 2 X			  X 2 2 X		  X 2 2 X		  X 2 2 X	
-			  With the empty spaces on the grid to be filled out according to the values of X.
-
+*			  
+*			  The cases which produce multiple answers in 4x4 matrices are described below:
+*
+*			  Multiple 4 and 3 solutions
+*			  When the conditions around the grid are like so:
+*			    X 2 2 X
+*			  X			X
+*			  2			2
+*			  2			2
+*			  X			X
+*			    X 2 2 X
+*			  Then four possible solutions are:
+*			  1.				2.				3.				4.
+*			    X 2 2 X			  X 2 2 X		  X 2 2 X		  X 2 2 X	
+*			  X|	   |X		X|	     |X		X|	     |X		X|	     |X
+*			  2|3 4    |2		2|  4   3|2		2|3   4  |2		2|    4 3|2
+*			  2|    4 3|2		2|3   4  |2		2|  4   3|2		2|3 4    |2
+*			  X|	   |X		X|	     |X		X|	     |X		X|	     |X
+*			    X 2 2 X			  X 2 2 X		  X 2 2 X		  X 2 2 X	
+*			  With the empty spaces on the grid to be filled out according to the values of X.
+*
 *	Author: Poema Cavalcanti
-*	Date: 30/05/2012
+*	Date: 06/06/2012
 **********************************************************************************************************************/
 
 #include <iostream>
 #include <list>
 using namespace std;
 
-const int MAP_SIZE = 4; // global variable for the number of rows and columns
-						// MAP_SIZE also determines how tall the tallest building can be
-
-
-class Skyscrapers {
-private:
-	bool is_solved;					// solution status
-	int left[MAP_SIZE];				// conditions for left side
-	int top[MAP_SIZE];				// conditions for top side
-	int right[MAP_SIZE];			// conditions for right side
-	int bottom[MAP_SIZE];			// conditions for bottom side
-	int map[MAP_SIZE][MAP_SIZE];	// a two-dimensional array that holds the "map" of the skyscraper positions
-public:
-	// CONSTRUCTOR
-	Skyscrapers() {
-		
-	}
-
-	// SET VALUE
-	void set_value(int a, int b, int value);
-
-	// SOLVE NEXT
-	bool solve_next(int num); // returns true after solving OR false if the number to be solved is already solved
-
-	// FINISH SOLVING
-	bool finish_solving(); // if possible, completes the map and returns true OR false otherwise
-
-	// SPLIT
-	friend Skyscrapers split (Skyscrapers branch);
-};
-
-void Skyscrapers::set_value(int a, int b, int value)
-{
-	map[a][b] = value;
-}
-
-bool Skyscrapers::solve_next(int num)
-{
-	if (num <= 0 || num > MAP_SIZE) {
-		cout << "Input is not a valid building size." << endl;
-		return false;
-	}
-
-	switch(num) {
-	case MAP_SIZE :
-		for (int i=1; i <= MAP_SIZE; i++) {
-			if (left[i] == 1) {
-				map[i][0] = MAP_SIZE;
-			}
-		}
-	case 1 :
-
-	default:
-
-	}
-
-}

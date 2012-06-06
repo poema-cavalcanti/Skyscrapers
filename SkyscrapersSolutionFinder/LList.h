@@ -203,7 +203,7 @@ void LList<ElementType>::display(ostream & out) const
 	Node * ptr = first;
 	while (ptr != 0)
 	{
-		cout << ptr->data << " ";
+		out << ptr->data << " ";
 		ptr = ptr->next;
 	}
 }

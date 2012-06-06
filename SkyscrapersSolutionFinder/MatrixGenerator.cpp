@@ -11,13 +11,13 @@ MatrixGenerator::MatrixGenerator() {
 	}
 }
 
-void MatrixGenerator::generate() {
+void MatrixGenerator::generate(ostream & out) {
     int count = 0;
     do
     {
         if (board.add(matrix))
         {
-            cout <<count << " : ";
+            cout << count << " : ";
             for ( int i = 0 ; i < (MAP_SIZE * MAP_SIZE) ; i++ ) {
                 cout << matrix[ i ] <<" ";
 			}
@@ -26,7 +26,8 @@ void MatrixGenerator::generate() {
         count++;
     } while ( next_permutation( matrix, matrix + (MAP_SIZE * MAP_SIZE) ) );
 
-    cout <<count <<" permutations were tested\n";
+    cout << count <<" permutations were tested\n";
+	board.print(out);
 
 	return;
 }

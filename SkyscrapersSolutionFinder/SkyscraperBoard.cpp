@@ -1,14 +1,32 @@
 #include"SkyscraperBoard.h"
 
+/***************************************
+* SKYSCRAPER BOARD DEFAULT CONSTRUCTOR *
+***************************************/
 SkyscraperBoard::SkyscraperBoard() {
 	for (int i = 0; i < MAP_SIZE; i++) {		
-		left[i] = 0; // initialize left conditions array to 0
-		top [i] = 0; // initialize top conditions array to 0
-		right[i] = 0; // initialize right conditions array to 0
-		bottom[i] = 0; // initialize bottom conditions array to 0
+		left[i] = 0; 
+		top [i] = 0; 
+		right[i] = 0; 
+		bottom[i] = 0; 
 	}
 }
 
+/*******************************
+* SKYSCRAPER BOARD CONSTRUCTOR *
+*******************************/
+SkyscraperBoard::SkyscraperBoard(int t[MAP_SIZE], int b[MAP_SIZE], int l[MAP_SIZE], int r[MAP_SIZE]) {
+	for (int i = 0; i < MAP_SIZE; i++) {		
+		left[i] = l[i]; 
+		top [i] = t[i]; 
+		right[i] = r[i]; 
+		bottom[i] = b[i];
+	}
+}
+
+/************************************
+* SKYSCRAPER BOARD COPY CONSTRUCTOR *
+************************************/
 SkyscraperBoard::SkyscraperBoard(SkyscraperBoard & original) {
 	for (int i = 0; i < MAP_SIZE; i++) {		
 		left[i] = original.left[i]; // copy left conditions array
@@ -18,6 +36,9 @@ SkyscraperBoard::SkyscraperBoard(SkyscraperBoard & original) {
 	}
 }
 
+/**************************
+* BOOL IS_LATIN (INT[][]) *
+**************************/
 bool SkyscraperBoard::is_latin(int matrix[MAP_SIZE][MAP_SIZE]) {
 	int counter = 0; // counter to keep track of the number of building of a particular height are in a row or column
 	int building = 1; // the building height being searched for
@@ -51,6 +72,9 @@ bool SkyscraperBoard::is_latin(int matrix[MAP_SIZE][MAP_SIZE]) {
 	return true; // if the function reaches this point the square must be latin and the funstion returns true
 }
 
+/*****************************
+* BOOL IS_SOLUTION (INT[][]) *
+*****************************/
 bool SkyscraperBoard::is_solution(int matrix[MAP_SIZE][MAP_SIZE]) {
 	int tallest_index = 0; // index to store the location of the MAP_SIZE tall building
 	int count_smaller = 0; // used to count the number of smaller buildings that can be seen from a vantage point
@@ -65,22 +89,16 @@ bool SkyscraperBoard::is_solution(int matrix[MAP_SIZE][MAP_SIZE]) {
 				if (matrix[i][0] != MAP_SIZE) { // but the building in front of that vantage point is not MAP_SIZE tall
 					return false; // the conditions are not being met and the function returns false
 				}
-				if (matrix[i][(MAP_SIZE - 1)] != (MAP_SIZE - (right[i] -1))) { // and if the building across the row on the right is not the correct height
-					return false; // conditions are not being met and the function returns false
-				}
 			}
 			else { // if the right condition is one
 				if (matrix[i][(MAP_SIZE - 1)] != MAP_SIZE) { // but the building in front of that vantage point is not MAP_SIZE tall
 					return false; // the conditions are not being met and the function returns false
 				}
-				if (matrix[i][0] != (MAP_SIZE - (left[i] -1))) { // and if the building across the row on the left is not the correct height
-					return false; // conditions are not being met and the function returns false
-				}
 			}
 		}
 
 		// CHECK ROW CONDITIONS OF MAP_SIZE
-		else if ((left[i] == MAP_SIZE) || (right[i] == MAP_SIZE)) { 
+		if ((left[i] == MAP_SIZE) || (right[i] == MAP_SIZE)) { 
 			if (left[i] == MAP_SIZE) { // if the left condition is MAP_SIZE
 				for (int j = 0; j < MAP_SIZE; j++) { // loop through the row and check that each building is increasing
 													 // in order from the left from 1 to MAP_SIZE
@@ -100,51 +118,51 @@ bool SkyscraperBoard::is_solution(int matrix[MAP_SIZE][MAP_SIZE]) {
 		}
 
 		// ALL OTHER ROW CONDITIONS
-		else {
-			for (int j = 0; j < MAP_SIZE; j++) { // find the location of the MAP_SIZE building in the row
-				if (matrix[i][j] == MAP_SIZE) {
-					tallest_index = j; // and assign the value to tallest_index
-					break;
-				}
+		
+		for (int j = 0; j < MAP_SIZE; j++) { // find the location of the MAP_SIZE building in the row
+			if (matrix[i][j] == MAP_SIZE) {
+				tallest_index = j; // and assign the value to tallest_index
+				break;
 			}
-
-			if ((tallest_index < (left[i] - 1)) || (tallest_index > (MAP_SIZE - right[i]))) { // if the MAP_SIZE building is
-							  // too close to the left to fulfil the boundry condition for the left-hand-side vantage point or
-							  // too close to the right to fulfil the boundry condition for the right-hand-side vantage point
-				return false; // the conditions are not being met and the function returns false
-			}
-
-			for (int j = 0; j <= tallest_index; j++) { // going from left to right and not excluding the MAP_SIZE tall building
-				if (matrix[i][j] > max) { // if a building is taller than the one before it 
-					count_smaller ++; // increase the counter of how many buildings can be seen
-					max = matrix[i][j]; // and assign the height to max in order to determine if another building can be seen
-				}
-			}
-
-			if (count_smaller != left[i]) { // if the count of building that can be seen from the left does not match the left condition
-				return false; // the function returns false
-			}
-
-			count_smaller = 0; // return count_smaller to 0
-			max = 0; // return max to 0
-
-			for (int j = (MAP_SIZE - 1); j >= tallest_index; j--) { // going from right to left and not excluding the MAP_SIZE tall building
-				if (matrix[i][j] > max) { // if a building is taller than the one before it
-					count_smaller ++; // increase the counter of how many buildings can be seen
-					max = matrix[i][j]; // and assign the height to max in order to determine if another building can be seen
-				}
-			}
-
-			if (count_smaller != right[i]) { // if the count of building that can be seen from the right does not match the right condition
-				return false; // the function returns false
-			}
-
-			count_smaller = 0; // return count_smaller to 0
-			max = 0; // return max to 0
 		}
+
+		if ((tallest_index < (left[i] - 1)) || (tallest_index > (MAP_SIZE - right[i]))) { // if the MAP_SIZE building is
+							// too close to the left to fulfil the boundry condition for the left-hand-side vantage point or
+							// too close to the right to fulfil the boundry condition for the right-hand-side vantage point
+			return false; // the conditions are not being met and the function returns false
+		}
+
+		for (int j = 0; j <= tallest_index; j++) { // going from left to right and not excluding the MAP_SIZE tall building
+			if (matrix[i][j] > max) { // if a building is taller than the one before it 
+				count_smaller ++; // increase the counter of how many buildings can be seen
+				max = matrix[i][j]; // and assign the height to max in order to determine if another building can be seen
+			}
+		}
+
+		if (count_smaller != left[i]) { // if the count of building that can be seen from the left does not match the left condition
+			return false; // the function returns false
+		}
+
+		count_smaller = 0; // return count_smaller to 0
+		max = 0; // return max to 0
+
+		for (int j = (MAP_SIZE - 1); j >= tallest_index; j--) { // going from right to left and not excluding the MAP_SIZE tall building
+			if (matrix[i][j] > max) { // if a building is taller than the one before it
+				count_smaller ++; // increase the counter of how many buildings can be seen
+				max = matrix[i][j]; // and assign the height to max in order to determine if another building can be seen
+			}
+		}
+
+		if (count_smaller != right[i]) { // if the count of building that can be seen from the right does not match the right condition
+			return false; // the function returns false
+		}
+
+		count_smaller = 0; // return count_smaller to 0
+		max = 0; // return max to 0
+		
 	}
 
-	// LOOP TO CHECK THAT THE BOUNDRY CONDITIONS FOR THE ROWS ARE BEING MET
+	// LOOP TO CHECK THAT THE BOUNDRY CONDITIONS FOR THE COLUMNS ARE BEING MET
 	for (int i = 0; i < MAP_SIZE; i++) {
 
 		// CHECK COLUMN CONDITIONS OF 1
@@ -153,22 +171,16 @@ bool SkyscraperBoard::is_solution(int matrix[MAP_SIZE][MAP_SIZE]) {
 				if (matrix[0][i] != MAP_SIZE) { // but the building in front of that vantage point is not MAP_SIZE tall
 					return false; // the conditions are not being met and the function returns false
 				}
-				if (matrix[(MAP_SIZE - 1)][i] != (MAP_SIZE - (bottom[i] -1))) { // and if the building across the column on the bottom is not the correct height
-					return false; // conditions are not being met and the function returns false
-				}
 			}
 			else { // if the bottom condition is one
 				if (matrix[(MAP_SIZE - 1)][i] != MAP_SIZE) { // but the building in front of that vantage point is not MAP_SIZE tall
 					return false; // the conditions are not being met and the function returns false
 				}
-				if (matrix[0][i] != (MAP_SIZE - (top[i] -1))) { // and if the building across the column on the top is not the correct height
-					return false; // conditions are not being met and the function returns false
-				}
 			}
 		}
 		
 		// CHECK COLUMN CONDITIONS OF MAP_SIZE
-		else if ((top[i] == MAP_SIZE) || (bottom[i] == MAP_SIZE)) { 
+		if ((top[i] == MAP_SIZE) || (bottom[i] == MAP_SIZE)) { 
 			if (top[i] == MAP_SIZE) { // if the top condition is MAP_SIZE
 				for (int j = 0; j < MAP_SIZE; j++) { // loop through the column and check that each building is increasing
 													 // in order from top to bottom from 1 to MAP_SIZE
@@ -188,58 +200,63 @@ bool SkyscraperBoard::is_solution(int matrix[MAP_SIZE][MAP_SIZE]) {
 		}
 
 		// ALL OTHER COLUMN CONDITIONS
-		else {
-			for (int j = 0; j < MAP_SIZE; j++) { // find the location of the MAP_SIZE building in the column
-				if (matrix[j][i] == MAP_SIZE) {
-					tallest_index = j; // and assign the value to tallest_index
-					break;
-				}
+		
+		for (int j = 0; j < MAP_SIZE; j++) { // find the location of the MAP_SIZE building in the column
+			if (matrix[j][i] == MAP_SIZE) {
+				tallest_index = j; // and assign the value to tallest_index
+				break;
 			}
-
-			if ((tallest_index < (top[i] - 1)) || (tallest_index > (MAP_SIZE - bottom[i]))) { // if the MAP_SIZE building is
-							  // too close to the top to fulfil the boundry condition for the top-side vantage point or
-							  // too close to the bottom to fulfil the boundry condition for the bottom-side vantage point
-				return false; // the conditions are not being met and the function returns false
-			}
-
-			for (int j = 0; j <= tallest_index; j++) { // going from top to bottom and not excluding the MAP_SIZE tall building
-				if (matrix[j][i] > max) { // if a building is taller than the one before it 
-					count_smaller ++; // increase the counter of how many buildings can be seen
-					max = matrix[j][i]; // and assign the height to max in order to determine if another building can be seen
-				}
-			}
-
-			if (count_smaller != top[i]) { // if the count of building that can be seen from the top does not match the top-side condition
-				return false; // the function returns false
-			}
-
-			count_smaller = 0; // return count_smaller to 0
-			max = 0; // return max to 0
-
-			for (int j = (MAP_SIZE - 1); j >= tallest_index; j--) { // going from bottom to top and not excluding the MAP_SIZE tall building
-				if (matrix[j][i] > max) { // if a building is taller than the one before it
-					count_smaller ++; // increase the counter of how many buildings can be seen
-					max = matrix[j][i]; // and assign the height to max in order to determine if another building can be seen
-				}
-			}
-
-			if (count_smaller != bottom[i]) { // if the count of building that can be seen from the bottom does not match the bottom-side condition
-				return false; // the function returns false
-			}
-
-			count_smaller = 0; // return count_smaller to 0
-			max = 0; // return max to 0
 		}
+
+		if ((tallest_index < (top[i] - 1)) || (tallest_index > (MAP_SIZE - bottom[i]))) { // if the MAP_SIZE building is
+							// too close to the top to fulfil the boundry condition for the top-side vantage point or
+							// too close to the bottom to fulfil the boundry condition for the bottom-side vantage point
+			return false; // the conditions are not being met and the function returns false
+		}
+
+		for (int j = 0; j <= tallest_index; j++) { // going from top to bottom and not excluding the MAP_SIZE tall building
+			if (matrix[j][i] > max) { // if a building is taller than the one before it 
+				count_smaller ++; // increase the counter of how many buildings can be seen
+				max = matrix[j][i]; // and assign the height to max in order to determine if another building can be seen
+			}
+		}
+
+		if (count_smaller != top[i]) { // if the count of building that can be seen from the top does not match the top-side condition
+			return false; // the function returns false
+		}
+
+		count_smaller = 0; // return count_smaller to 0
+		max = 0; // return max to 0
+
+		for (int j = (MAP_SIZE - 1); j >= tallest_index; j--) { // going from bottom to top and not excluding the MAP_SIZE tall building
+			if (matrix[j][i] > max) { // if a building is taller than the one before it
+				count_smaller ++; // increase the counter of how many buildings can be seen
+				max = matrix[j][i]; // and assign the height to max in order to determine if another building can be seen
+			}
+		}
+
+		if (count_smaller != bottom[i]) { // if the count of building that can be seen from the bottom does not match the bottom-side condition
+			return false; // the function returns false
+		}
+
+		count_smaller = 0; // return count_smaller to 0
+		max = 0; // return max to 0
+		
 	}
 
 	// Boundry conditions on all four sides are being met
 	return true; // so function returns true
 }
 
-bool SkyscraperBoard::valid_borders() {
+/****************************
+* BOOL VALID_BORDERS (VOID) *
+* incomplete				*
+****************************/
+//bool SkyscraperBoard::valid_borders() { }
 
-}
-
+/*******************
+* BOOL ADD (INT[]) *
+*******************/
 bool SkyscraperBoard::add(int matrix[MAP_SIZE * MAP_SIZE]) {
 	int row = -1;
 	int col = 0;
@@ -268,4 +285,27 @@ bool SkyscraperBoard::add(int matrix[MAP_SIZE * MAP_SIZE]) {
 	else {
 		return false; // otherwise, return false
 	}
+}
+
+/***********************
+* VOID PRINT (OSTREAM) *
+***********************/
+void SkyscraperBoard::print(ostream & out) const {
+	out << "The solution(s) for the border conditions\n  " ;
+	for (int i = 0; i < MAP_SIZE; i++) {
+		out << top[i] << " " ;
+	}
+	for (int i = 0; i < MAP_SIZE; i++) {
+		out << left[i] << " " ;
+		for (int i = 0; i < MAP_SIZE; i++) {
+			out << "  " ;
+		}
+		out << right[i] << "\n" ;
+	}
+	out << "  " ;
+	for (int i = 0; i < MAP_SIZE; i++) {
+		out << bottom[i] << " " ;
+	}
+	out << "\n" ;
+	solutions.display(out);
 }

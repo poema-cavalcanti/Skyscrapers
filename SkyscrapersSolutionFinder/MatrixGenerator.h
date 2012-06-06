@@ -23,7 +23,7 @@ private:
 
 public:
 	MatrixGenerator();
-	void generate();
+	void generate(ostream & out);
 	void set_board (SkyscraperBoard b);
 };
 
