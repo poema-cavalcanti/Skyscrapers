@@ -12,19 +12,19 @@ using namespace std;
 
 #include"LList.h"
 #include"SkyscraperBoard.h"
+#include"Board.h"
 
 #ifndef MATRIXGENERATOR
 #define MATRIXGENERATOR
 
 class MatrixGenerator {
 private:
-	int matrix[MAP_SIZE * MAP_SIZE];
-	SkyscraperBoard board;
+	int gen_matrix[MAP_SIZE * MAP_SIZE];
 
 public:
+	LList<Board> latin_squares;
 	MatrixGenerator();
 	void generate(ostream & out);
-	void set_board (SkyscraperBoard b);
 };
 
 #endif

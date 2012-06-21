@@ -74,11 +74,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="driver.cpp" />
     <ClCompile Include="MatrixGenerator.cpp" />
     <ClCompile Include="SkyscraperBoard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="LList.h" />
     <ClInclude Include="MatrixGenerator.h" />
     <ClInclude Include="SkyscraperBoard.h" />

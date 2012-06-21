@@ -10,6 +10,7 @@
 			void erase(int index)
 			void display(ostream & out) const
 			int getSize() const
+			int search()
   Author: Poema Cavalcanti
 **********************************************************/
 
@@ -20,7 +21,6 @@ using namespace std;
 #define LLIST
 
 template <typename ElementType>
-
 class LList
 {
 private:
@@ -83,10 +83,9 @@ public:
 	  Returns mySize.
 	******************/
 	int getSize() const;
+
+	ElementType get_element_data(int pos) ;
 };
-
-#endif
-
 
 // DEFAULT CONSTRUCTOR
 template <typename ElementType>
@@ -100,7 +99,7 @@ LList<ElementType>::LList()
 template <typename ElementType>
 LList<ElementType>::~LList()
 {
-	cout << "\nDestructor Called\n";
+	//cout << "\nDestructor Called\n";
     Node * prev = first;
     Node * ptr;
        
@@ -208,6 +207,21 @@ void LList<ElementType>::display(ostream & out) const
 	}
 }
 
+template <typename ElementType>
+ElementType LList<ElementType>::get_element_data(int pos) 
+{
+	Node * ptr = first;
+	for (int i = 0; i < pos; i++)
+	{
+		if (ptr == NULL) {
+			cout << "ERROR 401" << endl;
+		}
+		ptr = ptr->next;
+	}
+
+	return ptr->data;
+}
+
 //  ORDER INSERT
 template <typename ElementType>
 void LList<ElementType>::orderInsert(ElementType item)
@@ -254,7 +268,9 @@ void LList<ElementType>::orderInsert(ElementType item)
 
 // GET SIZE
 template <typename ElementType>
-int LList<ElementType>::getSize()
+int LList<ElementType>::getSize() const
 {
 	return mySize;
 }
+
+#endif

@@ -36,6 +36,70 @@
 **********************************************************************************************************************/
 
 #include <iostream>
-#include <list>
+#include <fstream>
+#include <string>
 using namespace std;
 
+#include "SkyscraperBoard.h"
+#include "MatrixGenerator.h"
+
+int main() {
+	MatrixGenerator gen;
+	gen.generate(cout);
+
+	string line;
+	int expected_size;
+	SkyscraperBoard board[438];
+	int k = 0;
+
+	ifstream myfile;
+	myfile.open("borders.txt", ifstream::in);
+	if (myfile.is_open())
+	{
+		while (!myfile.eof())
+		{
+			myfile >> line >> expected_size;
+			board[k].set(line);
+			cout << line << " " << expected_size;
+
+			for(int i = 0; i < gen.latin_squares.getSize(); i++) {
+				board[k].add(gen.latin_squares.get_element_data(i));
+			}
+
+			if(expected_size != board[k].solutions.getSize()) {
+				cout << "Error with board " << line
+					 << " expected " << expected_size 
+					 << " but found " << board[k].solutions.getSize()
+					 << " solutions." << endl;
+				break;
+			}
+
+			k++;
+		}
+		myfile.close();
+	}
+    else {
+		cout << "Unable to open file";
+	}
+
+	ofstream outfile;
+	outfile.open("boards.txt", fstream::out);
+
+	if (outfile.is_open())
+	{
+		while (outfile.good())
+		{
+			for (int i = 0; i < 438; i++) {
+				board[i].print(outfile);
+			}
+			break;
+		}
+		outfile.close();
+	}
+    else {
+		cout << "Unable to open file";
+	}
+
+
+	return 0;
+}

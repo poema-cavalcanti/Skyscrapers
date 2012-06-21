@@ -6,32 +6,41 @@ MatrixGenerator::MatrixGenerator() {
 		if (j > MAP_SIZE) {
 			j = 1;
 		}
-		matrix[i] = j;
+		gen_matrix[i] = j;
 		j++;
 	}
 }
 
 void MatrixGenerator::generate(ostream & out) {
+	Board map;
     int count = 0;
-    do
-    {
-        if (board.add(matrix))
-        {
+	int row = -1;
+	int col = 0;
+    do {
+		for (int i = 0; i < (MAP_SIZE * MAP_SIZE); i++) { // loop to put the values in matrix inside a two-dimensional array
+			if ( i % MAP_SIZE == 0) {
+				row ++;
+				col = 0;
+			}
+			map.matrix[row][col] = gen_matrix[i];
+			col ++;
+		}
+		row = -1;
+		col = 0;
+        if (map.is_latin()) {
             cout << count << " : ";
             for ( int i = 0 ; i < (MAP_SIZE * MAP_SIZE) ; i++ ) {
-                cout << matrix[ i ] <<" ";
+                cout << gen_matrix[i] <<" ";
 			}
             cout <<"\n";
+			latin_squares.insert(map, latin_squares.getSize());
         }
         count++;
-    } while ( next_permutation( matrix, matrix + (MAP_SIZE * MAP_SIZE) ) );
+    } while ( next_permutation( gen_matrix, gen_matrix + (MAP_SIZE * MAP_SIZE) ) );
 
     cout << count <<" permutations were tested\n";
-	board.print(out);
+	cout << "There are " << latin_squares.getSize() << " latin squares of order " << MAP_SIZE << "\n";
+	//latin_squares.display(out);
 
 	return;
-}
-
-void MatrixGenerator::set_board(SkyscraperBoard b) {
-	board = b;
 }
